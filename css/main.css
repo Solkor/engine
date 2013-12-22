@@ -1,4 +1,111 @@
 *{
     margin:0;
     padding:0;
+    font-family: georgia;
+}
+a {
+    text-decoration:none;
+    color:#78808a;
+}
+ul {
+    list-style: none;
+}
+li>a {
+    margin-left: 40px;
+}
+#userbar {
+    height: 50px;
+    width: 100%;
+    background-color:#11161a;
+}
+#sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    background-color:#11161a;
+}
+#nav li {
+    line-height:42px;
+    position: relative;
+    border-bottom: 1px solid transparent;
+}
+#nav li:after,.ddown li:after {
+    content: "";
+    height: 1px;
+    width: 100%;
+    position: absolute;
+    left:0;
+    background: -moz-linear-gradient(left, transparent 0%, rgba(32, 41, 47, 0.8) 35%, #20292f 50%, rgba(32, 41, 47, 0.8) 65%, transparent 100%);
+    background: -webkit-linear-gradient(left, transparent 0%, rgba(32, 41, 47, 0.8) 35%, #20292f 50%, rgba(32, 41, 47, 0.8) 65%, transparent 100%);    
+background: -ms-linear-gradient(left, transparent 0%, rgba(32, 41, 47, 0.8) 35%, #20292f 50%, rgba(32, 41, 47, 0.8) 65%, transparent 100%);
+}
+#nav li:before {
+    content: "";
+    height: 1px;
+    width: 100%;
+    position: absolute;
+    bottom:-1px;
+    left:0;
+background: -moz-linear-gradient(left, transparent 0%, rgba(10, 13, 14, 0.8) 30%, #0a0d0e 50%, rgba(10, 13, 14, 0.8) 70%, transparent 100%);
+background: -webkit-linear-gradient(left, transparent 0%, rgba(10, 13, 14, 0.8) 30%, #0a0d0e 50%, rgba(10, 13, 14, 0.8) 70%, transparent 100%);
+background: -ms-linear-gradient(left, transparent 0%, rgba(10, 13, 14, 0.8) 30%, #0a0d0e 50%, rgba(10, 13, 14, 0.8) 70%, transparent 100%);
+}
+.glow {
+    position: absolute;
+    height:40px;
+    width:5px;
+    background: #1F2B42;
+    box-shadow: 0 0 2px 1px #434d59 inset;
+}
+.active>.glow {
+    background: #4291A6;
+    box-shadow: -10px 0 15px 15px rgba(122, 171, 216, 0.15);
+}
+.active>a {
+    color: #AAB4B9 !important;
+}
+a:hover {
+    color: white;
+}
+#logo {
+    line-height:50px;
+    font-size: 20px;
+    margin-left: 30px;
+}
+#user {
+    float:right;
+    line-height:50px;
+    margin-right: 50px;
+    width: 150px;
+}
+.avatar {
+    float:left;
+    height:30px;
+    width:30px;
+    border-radius:3px;
+    margin: 10px;
+}
+.ddown>li {
+    line-height: 30px;    
+}
+.avatar-big {
+    text-align:center;
+}
+.avatar-big>img {
+    max-height:100px;
+    width:100px;
+    margin:10px;
+    border-radius: 50px;
+}
+.ddown-cont {
+    width:150px;
+    position:absolute;
+    right:50px;
+    background-color:whitesmoke;
+    border:1px solid silver;
+    border-radius:3px;
+    display:none;
+}
+#arrow {
+    font-size:8pt;
 }
