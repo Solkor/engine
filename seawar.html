@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SeaBattle</title>
+    <style>
+        table {
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+            border-collapse: collapse;
+            float: left;
+            margin: 30px;
+        }
+        td {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+        }
+        .b {
+            background-color: gray;
+        }
+        button {
+            float: left;
+            margin-top: 150px;
+        }
+        .d {
+            background-color: red !important;
+        }
+        .m {
+            background-color: white !important;
+        }
+        #field2 .m {
+            background-color: skyblue !important;
+        }
+    </style>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script>  
+            var xy=[[],[],[],[],[],[],[],[],[],[],[],[],[]];
+            var map1,map2;
+        $(document).ready(function() {            
+            var field=document.getElementById('field');
+            for(var y=1;y<11;y++){
+                    var tr=document.createElement('tr');
+                    field.appendChild(tr);
+                for(var x=1;x<11;x++){
+                    var td=document.createElement('td');
+                    tr.appendChild(td);                
+                }
+            }
+            $('#field').clone().attr('id','field2').appendTo('body');
+            map1=$('td:lt(100)');
+            map2=$('td:gt(99)');            
+            $('#but').one('click',main);
+            });            
+            function main(){
+                map1.one('click',fire);
+                field(map1);
+                map1.css('background-color','gray');
+                xy=[[],[],[],[],[],[],[],[],[],[],[],[],[]];
+                field(map2);
+            }
+            function fire(){  
+                
+               if($(this).hasClass('b')){
+                   $(this).addClass('d');
+                   $(this).removeClass('b');
+                   if($(this).closest('table').attr('id')=='field2'){
+                backfire();
+                backfire();   }
+               }
+                else { $(this).addClass('m');
+                      if($(this).closest('table').attr('id')=='field')
+                backfire();
+                     }
+                if($('#field .b').length==0)
+                    alert('You win!');
+            }
+            function backfire(){
+                var targets=$('#field2 td').not('.m,.d');
+                if(targets.length==0)
+                    alert('You lose!');
+                var abc=targets[Math.floor(Math.random()*targets.length)];
+                fire.apply(abc);
+            }
+            function field(map) {                
+                $('#but').css('visibility','hidden');
+                createQuadroDeck(map);
+                createTripleDeck(map);
+                createDoubleDeck(map);
+                createOneDeck(map);              
+//                createArray(map);            
+            }            
+            function createArray(map){
+                for(var y=0;y<11;y++){
+                for(var x=1;x<11;x++){
+                    map.eq(y*10+(x-1)).text(xy[x][y]);                
+                }
+            }                
+            }
+            function createOneDeck(map){
+                var k=1;
+                while(k<=4){
+                x=Math.floor(Math.random()*10+1);
+                y=Math.floor(Math.random()*10);
+                if(xy[x][y]==undefined){                   
+                margin(map);
+//                console.log('boat '+1+' coords: '+x+', '+(y+1));
+                k++;
+                }
+            }
+            }
+            function margin(map){            
+                    xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;
+                xy[x][y]=1;  
+                var n=y*10+(x-1);
+                map.eq(n).addClass('b');
+            }
+            function createDoubleDeck(map){
+                var k=1;
+                while(k<=3){                
+                x=Math.floor(Math.random()*10+1);
+                y=Math.floor(Math.random()*10);
+                var vector=Math.floor(Math.random()*2);
+                    if(x==10) {
+                        if(xy[x-1][y]==undefined)
+                            vector=3;
+                        else x=Math.floor(Math.random()*10+1);
+                            }
+                    if(y==9) {
+                        if(xy[x][y-1]==undefined)
+                            vector=4;
+                        else y=Math.floor(Math.random()*10);
+                            }
+                if(xy[x][y]==undefined){
+                    if(xy[x][y+1]==undefined&&xy[x+1][y]==undefined){
+                        margin(map);
+//                        console.log('boat '+2+' coords: '+x+', '+(y+1));                    
+                switch (vector) {
+                    case 3: x=x-1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 4: y=y-1; xy[x][y-1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 1: y=y+1; xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;            
+                    case 0: x=x+1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;
+                    }                
+                var n=y*10+(x-1);
+                map.eq(n).addClass('b');                
+                xy[x][y]=1;
+                k++;
+                    }
+                    }
+                }
+            }   
+            function createTripleDeck(map){
+                var k=1;
+                while(k<=2){                
+                x=Math.floor(Math.random()*10+1);
+                y=Math.floor(Math.random()*10);
+                var vector=Math.floor(Math.random()*2);
+                    if(x>=9) {
+                        if(xy[x-1][y]==undefined&&xy[x-2][y]==undefined)
+                            vector=3;
+                        else x=Math.floor(Math.random()*10+1);
+                            }
+                    if(y>=8) {
+                        if(xy[x][y-1]==undefined&&xy[x][y-2]==undefined)
+                            vector=4;
+                        else y=Math.floor(Math.random()*10);
+                            }
+                if(xy[x][y]==undefined){
+                    if(xy[x][y+1]==undefined&&xy[x+1][y]==undefined&&xy[x][y+2]==undefined&&xy[x+2][y]==undefined){
+                        margin(map);
+//                        console.log('boat '+3+' coords: '+x+', '+(y+1));                    
+                switch (vector) {
+                    case 3: x=x-1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 4: y=y-1; xy[x][y-1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 1: y=y+1; xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;            
+                    case 0: x=x+1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;
+                    }                
+                var n=y*10+(x-1);
+                map.eq(n).addClass('b');
+                xy[x][y]=1;                   
+                    switch (vector) {
+                    case 3: x=x-1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 4: y=y-1; xy[x][y-1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 1: y=y+1; xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;            
+                    case 0: x=x+1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;
+                    }                
+                var n=y*10+(x-1);
+                map.eq(n).addClass('b');
+                xy[x][y]=1;                    
+                k++;   }
+                    }
+                }
+            } 
+            function createQuadroDeck(map){                              
+                x=Math.floor(Math.random()*10+1);
+                y=Math.floor(Math.random()*10);
+                var vector=Math.floor(Math.random()*2);
+                    if(x>=8) {
+                        if(xy[x-1][y]==undefined&&xy[x-2][y]==undefined&&xy[x-3][y]==undefined)
+                            vector=3;
+                        else x=Math.floor(Math.random()*10+1);
+                            }
+                    if(y>=7) {
+                        if(xy[x][y-1]==undefined&&xy[x][y-2]==undefined&&xy[x][y-3]==undefined)
+                            vector=4;
+                        else y=Math.floor(Math.random()*10);
+                            }
+                if(xy[x][y]==undefined){
+                    if(xy[x][y+1]==undefined&&xy[x+1][y]==undefined&&xy[x][y+2]==undefined&&xy[x+2][y]==undefined){
+                        margin(map);                 
+                switch (vector) {
+                    case 3: x=x-1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 4: y=y-1; xy[x][y-1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 1: y=y+1; xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;            
+                    case 0: x=x+1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;
+                    }                
+                var n=y*10+(x-1);
+                map.eq(n).addClass('b');
+                xy[x][y]=1;                      
+                        switch (vector) {
+                    case 3: x=x-1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 4: y=y-1; xy[x][y-1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 1: y=y+1; xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;            
+                    case 0: x=x+1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;
+                    }                
+                var n=y*10+(x-1);
+                map.eq(n).addClass('b');
+                xy[x][y]=1;
+                        
+                switch (vector) {
+                    case 3: x=x-1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 4: y=y-1; xy[x][y-1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0; break;
+                    case 1: y=y+1; xy[x][y+1]=xy[x-1][y-1]=xy[x-1][y]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;            
+                    case 0: x=x+1; xy[x][y-1]=xy[x][y+1]=xy[x-1][y-1]=
+                    xy[x-1][y+1]=xy[x+1][y]=xy[x+1][y+1]=xy[x+1][y-1]=0;break;
+                    }                
+                var n=y*10+(x-1);
+                map.eq(n).addClass('b');
+                xy[x][y]=1;        
+//                  console.log('boat '+4+' coords: '+x+', '+(y+1));                  
+                    }
+                    }             
+            } 
+    </script>
+</head>
+<body>      
+    <table id='field'>        
+    </table>
+    <button id='but'>Start Game</button>
+</body>
+</html>
