@@ -1,10 +1,27 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <link rel="shortcut icon" href="http://s1.iconbird.com/ico/2013/6/285/w32h321371572634Compass.png" type="image/png">
+    <title>SeaBattle</title>
+    <link rel='stylesheet' href="css/style.css" type='text/css'>
+    <script src="js/jquery-2.0.3.js"></script>
+    <script src='js/main.js'></script> 
 </head>
-<body>
-    
+<body> 
+    <div id='game'>
+        <table id='field'>
+        <caption>Соперник</caption>
+        </table>
+        <button id='but'>I'm ready</button>
+    </div>
+    <div id='chat'>
+        <form id="publish">
+            <textarea id='msg'></textarea>
+            <input type="submit" value="Отправить">
+        </form>
+        <div id="subscribe"></div>
+        <div id='users'></div>
+    </div>
 </body>
 </html>
